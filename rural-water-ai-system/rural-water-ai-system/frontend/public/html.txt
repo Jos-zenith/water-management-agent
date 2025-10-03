@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Development Plan: WaterSense Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Tech Blue (Background: #F7F9FC, Primary: #1E3A8A, Accent: #3B82F6, Text: #1F2937) -->
+    <!-- Application Structure Plan: The SPA is structured as a technical specification document for a development team. It follows a logical hierarchy: 1. Overview/Goal (Why the agent exists). 2. Input/Data Requirements (What the agent needs). 3. Capabilities/Logic (How the agent works). 4. Output Specification (What the agent delivers). This structured approach was chosen to ensure all technical and non-technical requirements are clearly communicated for development and integration into the existing DMA infrastructure. -->
+    <!-- Visualization & Content Choices: 
+    - Report Info: Agent Goal -> Goal: Inform/Motivate -> Viz/Presentation: Highlighted text block with Key Performance Indicator (KPI). -> Interaction: None. -> Justification: Clearly states the non-negotiable success metric. -> Library/Method: HTML/Tailwind.
+    - Report Info: Data Inputs -> Goal: Organize -> Viz/Presentation: Interactive table with dynamic filtering. -> Interaction: Clickable buttons to filter data streams by type (Real-Time vs. Static). -> Justification: Allows developers to quickly reference integration points. -> Library/Method: Vanilla JS & HTML/Tailwind.
+    - Report Info: Output Specification -> Goal: Organize/Specify -> Viz/Presentation: Structured table defining JSON schema. -> Interaction: None. -> Justification: Provides clear contract for the output JSON, essential for integration. -> Library/Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F9FC;
+            color: #1F2937;
+        }
+        .header-bg {
+            background-color: #1E3A8A;
+        }
+        .accent-color {
+            color: #3B82F6;
+        }
+        .button-active {
+            background-color: #1E3A8A;
+            color: white;
+            border-color: #1E3A8A;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="header-bg shadow-lg">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-white">AI Agent Development Plan</h1>
+            <p class="text-xl text-blue-300 mt-2">WaterSense Leak Predictor - DMA Integration</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="purpose" class="mb-12 bg-white p-8 rounded-xl shadow-md border-t-4 border-blue-500">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 flex items-center">
+                <span class="mr-3 text-3xl accent-color">💡</span>
+                1. Agent Purpose & Strategic Goal
+            </h2>
+            <p class="text-gray-600 mb-6">
+                The **WaterSense Leak Predictor** is an autonomous AI agent integrated into the Stage 1 DMA system. Its purpose is to shift DMA management from **reactive manual data review** to **proactive, predictive, and prioritized action**. It uses time-series analysis to find anomalies and predict potential pipe bursts before they cause major water loss.
+            </p>
+            <div class="bg-green-50 border-l-4 border-green-600 p-4 rounded">
+                <p class="font-semibold text-lg text-green-800">Key Performance Indicator (KPI):</p>
+                <p class="text-green-700">Reduce the **Mean Time to Leak Repair (MTTR)** by at least **50%** by accelerating incident detection and work order creation.</p>
+            </div>
+        </section>
+
+        <section id="inputs" class="mb-12 bg-white p-8 rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                <span class="mr-3 text-3xl accent-color">📊</span>
+                2. Data Inputs (Required for Correlation)
+            </h2>
+            <p class="text-gray-600 mb-6">The agent requires seamless access to real-time telemetry and historical context to accurately model normal behavior and identify deviations.</p>
+            
+            <div class="flex space-x-4 mb-6">
+                <button id="filter-all" class="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 button-active transition duration-150">All Data Streams</button>
+                <button id="filter-realtime" class="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 hover:bg-gray-100 transition duration-150">Real-Time Data</button>
+                <button id="filter-static" class="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 hover:bg-gray-100 transition duration-150">Static Data</button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Stream</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source/Frequency</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- Content inserted by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="capabilities" class="mb-12 bg-white p-8 rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                <span class="mr-3 text-3xl accent-color">⚙️</span>
+                3. Core Capabilities & Triggers
+            </h2>
+            
+            <div class="space-y-6">
+                <div class="border p-4 rounded-lg">
+                    <h3 class="font-semibold text-xl mb-2 text-gray-700">Capability A: Anomaly Detection (Immediate Alerts)</h3>
+                    <p class="text-sm text-gray-600">**Logic:** Detects sustained deviations from predicted flow/pressure signatures (3-sigma threshold).</p>
+                    <p class="text-sm font-mono mt-2 p-1 bg-red-50 rounded">**Trigger:** MNF increases > 10% above baseline for 3 consecutive 15-minute intervals.</p>
+                </div>
+                <div class="border p-4 rounded-lg">
+                    <h3 class="font-semibold text-xl mb-2 text-gray-700">Capability B: Predictive Prioritization (Future Risk)</h3>
+                    <p class="text-sm text-gray-600">**Logic:** Correlates pressure instability with historical failures to forecast a burst probability in the next 12 hours.</p>
+                    <p class="text-sm font-mono mt-2 p-1 bg-yellow-50 rounded">**Trigger:** Rapid pressure fluctuations without an immediate MNF spike.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="output" class="mb-12 bg-white p-8 rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                <span class="mr-3 text-3xl accent-color">📝</span>
+                4. Work Order Generation & Output Specification
+            </h2>
+            <p class="text-gray-600 mb-6">The agent must generate a single, clean JSON object for each event, serving as the definitive work order for the maintenance dispatch system.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Field Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Type</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Example</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">dma_id</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">String</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">Unique identifier of the affected zone.</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">DMA-KGD-007</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">issue_type</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Enum (2 types)</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">LEAK_DETECTED / BURST_PREDICTED.</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">BURST_PREDICTED</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">priority</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Enum (3 types)</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">CRITICAL / HIGH / MEDIUM (based on magnitude & risk).</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">CRITICAL</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">loss_estimate_LPH</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Integer</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">Estimated current water loss rate in Litres Per Hour.</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">4500</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">suggested_action</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">String</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">Recommended next step for the field team.</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Acoustic Survey Required</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">timestamp_generated</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Timestamp (ISO 8601)</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">Time the work order was created.</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2025-10-03T23:30:00Z</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 class="font-semibold text-xl mt-8 mb-3 text-gray-700">Feedback Loop (Mandatory)</h3>
+            <p class="text-sm text-gray-600 border-l-4 border-gray-400 pl-3">
+                A critical requirement: Maintenance crews must report the outcome of every work order ("Confirmed & Repaired," "False Positive") to an internal endpoint. This data must be collected and used for **quarterly model retraining** to maintain high accuracy.
+            </p>
+        </section>
+
+    </main>
+    
+    <footer class="header-bg mt-12">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p class="text-sm text-blue-200">Target Model: LSTM/GRU (Time-Series Anomaly Detection)</p>
+        </div>
+    </footer>
+
+    <script>
+        const dataInputs = [
+            { stream: 'Flow Rate (MNF)', frequency: 'Every 5 minutes', source: 'DMA Inlet Flow Meters', purpose: 'Primary metric for identifying sudden drops or sustained minimum flow increases.', type: 'realtime' },
+            { stream: 'Pressure Readings', frequency: 'Every 5 minutes', source: 'Smart PRVs', purpose: 'Identifies pressure anomalies (drops/spikes) that correlate with pipe bursts.', type: 'realtime' },
+            { stream: 'Historical Baseline', frequency: 'Static Database', source: '12 months of prior data', purpose: 'Provides the "normal" operating signature for comparison, factoring in seasonal variations.', type: 'static' },
+            { stream: 'Work Order History', frequency: 'Static Database', source: 'Past 24 months of maintenance records', purpose: 'Used to correlate false positives and learn from previous repair locations and types.', type: 'static' },
+            { stream: 'Weather Data', frequency: 'Hourly', source: 'External API/Sensor', purpose: 'Factors in rainfall/temperature changes that affect ground saturation and pipe movement.', type: 'realtime' },
+        ];
+
+        const tableBody = document.getElementById('data-table-body');
+        const filters = document.querySelectorAll('#inputs button');
+
+        function renderTable(filterType = 'all') {
+            tableBody.innerHTML = '';
+            const filteredData = dataInputs.filter(item => filterType === 'all' || item.type === filterType);
+            
+            filteredData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                
+                const streamCell = document.createElement('td');
+                streamCell.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900';
+                streamCell.textContent = item.stream;
+
+                const freqCell = document.createElement('td');
+                freqCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                freqCell.textContent = item.source + ' / ' + item.frequency;
+                
+                const purposeCell = document.createElement('td');
+                purposeCell.className = 'px-6 py-4 text-sm text-gray-500';
+                purposeCell.textContent = item.purpose;
+                
+                row.appendChild(streamCell);
+                row.appendChild(freqCell);
+                row.appendChild(purposeCell);
+                tableBody.appendChild(row);
+            });
+        }
+
+        function handleFilterClick(event) {
+            filters.forEach(btn => btn.classList.remove('button-active'));
+            event.target.classList.add('button-active');
+            
+            let filterType = 'all';
+            if (event.target.id === 'filter-realtime') {
+                filterType = 'realtime';
+            } else if (event.target.id === 'filter-static') {
+                filterType = 'static';
+            }
+            renderTable(filterType);
+        }
+
+        filters.forEach(button => {
+            button.addEventListener('click', handleFilterClick);
+        });
+
+        renderTable('all');
+    </script>
+
+</body>
+</html>
